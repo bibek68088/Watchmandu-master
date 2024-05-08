@@ -1,0 +1,59 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    background-color: #f4f4f4; /* Set background color */
+}
+
+.container {
+    text-align: center;
+    margin-top: 20px; /* Add some top margin for spacing */
+}
+
+#watchContainer {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(250px, 1fr)); /* Adjusted to display 4 items per row */
+    grid-gap: 20px; /* Adjust the gap between grid items */
+    align-items: start;
+    position: relative;
+    margin-top: 4%;
+}
+
+.watch-card {
+    border: 1px solid #ddd; /* Lighter border */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    background-color: #fff; /* White background */
+    transition: transform 0.3s ease; /* Add smooth hover effect */
+    height: 100%; /* Set fixed height for each card */
+}
+
+.watch-card:hover {
+    transform: translateY(-5px); /* Lift card on hover */
+}
+
+.watch-image {
+    width: 100%;
+    max-width: 100%; /* Ensure image stays within card */
+    height: auto;
+    border-radius: 8px; /* Rounded corners for images */
+    margin-bottom: 15px;
+}
+
+.buy-button {
+    background-color: #007bff; /* Blue buy button */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Add smooth transition */
+}
+
+.buy-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}

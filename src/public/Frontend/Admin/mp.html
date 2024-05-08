@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="../Product/product.css">
+</head>
+<body>
+   <section id="sidebar">
+        <a href="http://localhost:3000/index2.html" class="brand">
+            <span class="text">Watchmandu</span>
+        </a>
+        <ul class="side-menu top">
+            <li class="active">
+                <a href="panel.html" id="uploadWatchTab">
+                    <i class='bx bxs-dashboard' ></i>
+                    <span class="text">Upload Watch</span>
+                </a>
+            </li>
+            <li>
+                <a href="user.html" id="manageUsersTab">
+                    <i class='bx bxs-shopping-bag-alt' ></i>
+                    <span class="text">Manage Users</span>
+                </a>
+            </li>
+            <li>
+                <a href="" id="manageProductsTab">
+                    <i class='bx bxs-cart' ></i>
+                    <span class="text">Manage Products</span>
+                </a>
+            </li>
+        </ul>
+   
+</section>
+    <div id="watchContainer"></div>
+
+
+<script>
+
+async function fetchAndRenderWatches() {
+    try {
+        const response = await fetch('http://localhost:3000/upload');
+        const watches = await response.json();
+
+        const watchContainer = document.getElementById('watchContainer');
+
+        watches.forEach(watch => {
+            const watchCard = document.createElement('div');
+            watchCard.classList.add('watch-card');
+            watchCard.innerHTML = `
+           
+                <h3>${watch.title}</h3>
+                <p>${watch.description}</p>
+                <p>Price: $${watch.price}</p>
+                <div class="buttons">
+                    <button class="delete-btn" onclick="deleteProduct('${watch._id}')">Delete</button>
+                    <button class="update-btn" onclick="updateProduct('${watch._id}')">Update</button>
+                </div>
+        
+            `;
+            watchContainer.appendChild(watchCard);
+        });
+    } catch (error) {
+        console.error('Error fetching watch data:', error);
+    }
+}
+
+async function deleteProduct(productId) {
+    try {
+        const response = await fetch(`http://localhost:3000/delete/${productId}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            // Product deleted successfully, fetch and render updated product list
+            fetchAndRenderWatches();
+            window.location.href = 'mp.html';
+        } else {
+            console.error('Failed to delete product');
+        }
+    } catch (error) {
+        console.error('Error deleting product:', error);
+    }
+}
+
+async function updateProduct(productId) {
+    const newName = prompt('Enter new name:');
+    const newDescription = prompt('Enter new description:');
+    const newPrice = prompt('Enter new price:');
+
+    if (newName && newDescription && newPrice) {
+        try {
+            const response = await fetch(`http://localhost:3000/upload/${productId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: newName,
+                    description: newDescription,
+                    price: parseFloat(newPrice)
+                })
+            });
+
+            if (response.ok) {
+                // Product updated successfully, fetch and render updated product list
+                fetchAndRenderWatches();
+                alert('Product updated successfully!');
+
+                window.location.href = 'mp.html';
+            } else {
+                console.error('Failed to update product');
+            }
+        } catch (error) {
+            console.error('Error updating product:', error);
+        }
+    } else {
+        alert('Please provide valid input for name, description, and price.');
+    }
+}
+
+fetchAndRenderWatches();
+
+
+</script>
+<script src="admin.js"></script>
+
+
+</body>
